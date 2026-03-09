@@ -25,32 +25,26 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    header {
-      background: linear-gradient(135deg, #081c15, #123d2c, #1b5a41);
-      color: #ffffff;
-      text-align: center;
-      padding: 52px 20px 38px;
+    .masthead {
+      width: 100%;
+      overflow: hidden;
+      background: #081c15;
     }
 
-    header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 12px;
-      color: #ffffff;
-    }
-
-    header p {
-      max-width: 760px;
-      margin: 0 auto;
-      line-height: 1.6;
-      color: #effff5;
+    .masthead img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
     }
 
     .top-controls {
-      margin-top: 18px;
+      background: #0f2f22;
+      padding: 14px 20px;
       display: flex;
       justify-content: center;
-      gap: 12px;
       align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -103,7 +97,7 @@
     }
 
     .navbar {
-      background: #0f2f22;
+      background: #123d2c;
       display: flex;
       justify-content: center;
       gap: 28px;
@@ -190,10 +184,6 @@
       padding-left: 20px;
     }
 
-    .feature-card {
-      text-align: left;
-    }
-
     .feature-card h3 {
       margin-top: 0;
     }
@@ -239,11 +229,6 @@
     .secondary-btn {
       background: #e7f3ec;
       color: #123d2c;
-    }
-
-    .secondary-btn:hover,
-    .main-btn:hover {
-      opacity: 0.95;
     }
 
     .score-box {
@@ -330,6 +315,10 @@
       color: #4b6758;
     }
 
+    .references-list li {
+      margin-bottom: 10px;
+    }
+
     footer {
       text-align: center;
       padding: 24px;
@@ -342,10 +331,11 @@
       color: #edf7f0;
     }
 
-    body.dark-mode header {
-      background: linear-gradient(135deg, #03100a, #081c15, #123d2c);
+    body.dark-mode .masthead {
+      background: #03100a;
     }
 
+    body.dark-mode .top-controls,
     body.dark-mode .navbar {
       background: #081c15;
     }
@@ -425,22 +415,17 @@
   </style>
 </head>
 <body>
-  <header id="home">
-    <h1>🩹 QuickAid</h1>
-    <p>
-      A Web Based First Aid Recommendation System for Minor Wounds.
-      QuickAid provides structured first aid guidance using wound assessment,
-      symptom screening, priority scoring, and safety reminders.
-    </p>
-
-    <div class="top-controls">
-      <span class="toggle-label">Light / Dark Mode</span>
-      <label class="switch">
-        <input type="checkbox" onclick="toggleDarkMode()">
-        <span class="slider"></span>
-      </label>
-    </div>
+  <header id="home" class="masthead">
+    <img src="masthead.png" alt="QuickAid Masthead">
   </header>
+
+  <div class="top-controls">
+    <span class="toggle-label">Light / Dark Mode</span>
+    <label class="switch">
+      <input type="checkbox" onclick="toggleDarkMode()">
+      <span class="slider"></span>
+    </label>
+  </div>
 
   <nav class="navbar">
     <a href="#home">Home</a>
@@ -457,30 +442,30 @@
         <h2>How QuickAid Works</h2>
         <p>
           QuickAid is a prototype decision-support website for minor wound care.
-          Instead of making users search multiple pages, it gathers important first aid
-          guidance into one guided interface.
+          Instead of requiring users to search through multiple online sources,
+          the system organizes essential first aid guidance into one guided and accessible interface.
         </p>
         <h3>System Flow</h3>
         <ul>
-          <li>User selects wound type and wound condition</li>
-          <li>User checks symptoms or warning signs</li>
-          <li>System calculates a risk score and assigns a priority level</li>
-          <li>System generates first aid steps and safety reminders</li>
-          <li>User may download the recommendation report</li>
+          <li>User selects the wound type and visible wound condition</li>
+          <li>User checks symptoms or warning signs observed on the wound</li>
+          <li>The system calculates a simple risk score and assigns a priority level</li>
+          <li>The system generates basic first aid guidance and optional natural support</li>
+          <li>User may download the generated recommendation report for reference</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="pill">Why It Is Innovative</div>
-        <h2>Why QuickAid Is More Than a Simple Website</h2>
+        <div class="pill">Innovation Value</div>
+        <h2>Why QuickAid Is More Than a Basic Information Website</h2>
         <ul>
-          <li>It uses a structured wound assessment, not just static information</li>
-          <li>It has a symptom checklist for screening warning signs</li>
-          <li>It generates a risk score automatically</li>
-          <li>It classifies the wound into low, moderate, or high priority</li>
-          <li>It can export a downloadable recommendation report</li>
-          <li>It includes dark mode for accessibility and user comfort</li>
-          <li>It supports offline access after initial loading</li>
+          <li>It uses structured wound assessment instead of static content display</li>
+          <li>It includes a symptom checklist to screen possible warning signs</li>
+          <li>It generates a risk score automatically based on user input</li>
+          <li>It classifies cases into low, moderate, or high priority</li>
+          <li>It provides downloadable output for user reference</li>
+          <li>It supports offline access after the initial online visit</li>
+          <li>It includes a dark mode option for accessibility and user comfort</li>
         </ul>
       </div>
     </div>
@@ -490,7 +475,7 @@
         <div class="pill">Feature 1</div>
         <h3>Symptom Checklist</h3>
         <p>
-          Users can select visible warning signs such as swelling, pus, redness,
+          Users can select visible warning signs such as swelling, discharge, redness,
           fever, unusual pain, or spreading irritation.
         </p>
       </div>
@@ -499,8 +484,8 @@
         <div class="pill">Feature 2</div>
         <h3>Auto Risk Score</h3>
         <p>
-          QuickAid computes a simple risk score based on wound type, severity,
-          bleeding level, and checked symptoms.
+          QuickAid computes a simple risk score based on wound severity,
+          bleeding level, and selected symptoms.
         </p>
       </div>
 
@@ -508,8 +493,8 @@
         <div class="pill">Feature 3</div>
         <h3>Offline Access</h3>
         <p>
-          After the website is opened once while online, the essential files can be
-          stored by the browser for later offline use.
+          After the website is opened once with internet access, essential files may be stored
+          by the browser so that the system can still be accessed later without connection.
         </p>
       </div>
     </section>
@@ -575,8 +560,8 @@
         <div class="pill">Generated Output</div>
         <h2>Recommendation Panel</h2>
         <p>
-          The system evaluates the input and produces a priority level, a risk score,
-          first aid actions, optional natural support, and medical caution notes.
+          The system evaluates the entered data and produces a priority level,
+          a risk score, first aid actions, optional natural support, and medical caution notes.
         </p>
 
         <div id="scoreBox" class="score-box">
@@ -586,8 +571,8 @@
         <div id="result" class="result"></div>
 
         <div class="warning">
-          <strong>Disclaimer:</strong> QuickAid is for educational purposes only.
-          It does not replace medical advice, diagnosis, or treatment.
+          <strong>Disclaimer:</strong> QuickAid is intended for educational purposes only.
+          It does not replace professional medical advice, diagnosis, or treatment.
         </div>
       </section>
     </div>
@@ -599,18 +584,23 @@
         QuickAid was developed as an educational prototype that organizes first aid
         responses for minor wounds into one accessible web-based platform.
         The system focuses on minor wound assessment, structured guidance,
-        optional natural support, and early identification of warning signs.
+        optional natural support, and early identification of visible warning signs.
       </p>
     </section>
 
     <section id="references" class="card" style="margin-top:22px;">
-      <div class="pill">References</div>
-      <h2>Suggested References Section</h2>
-      <ul>
-        <li>World Health Organization first aid guidance and wound-care educational materials</li>
-        <li>Basic first aid modules from health and school safety references</li>
-        <li>Published literature discussing aloe vera and other natural supports for minor skin care</li>
-        <li>General first aid manuals for cleaning, dressing, and observing minor wounds</li>
+      <div class="pill">Knowledge Base</div>
+      <h2>Information Sources and Basis of Recommendations</h2>
+      <p class="mini-note">
+        The recommendations presented by QuickAid are based on general first aid concepts,
+        educational health references, and published discussions on minor wound care and basic natural support.
+        This section demonstrates the informational basis used in organizing the system’s guidance.
+      </p>
+      <ul class="references-list">
+        <li>General first aid principles on cleaning, protecting, and observing minor wounds</li>
+        <li>Educational health resources discussing minor cuts, burns, insect bites, and abrasions</li>
+        <li>Published discussions on the use of aloe vera and similar natural substances as supportive care for minor skin irritation</li>
+        <li>Public health and school safety materials related to wound observation and safety precautions</li>
       </ul>
     </section>
   </div>
