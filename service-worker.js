@@ -1,10 +1,10 @@
-const CACHE_NAME = "quickaid-cache-v2";
+const CACHE_NAME = "quickaid-cache-v3";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./masthead.png"
+  "./masthead-v2.png"
 ];
 
 self.addEventListener("install", (event) => {
