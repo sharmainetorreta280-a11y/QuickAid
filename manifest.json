@@ -1,0 +1,11 @@
+{
+  "name": "QuickAid",
+  "short_name": "QuickAid",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3fbf6",
+  "theme_color": "#123d2c",
+  "description": "A web based first aid recommendation system for minor wounds with offline support.",
+  "icons": []
+}
