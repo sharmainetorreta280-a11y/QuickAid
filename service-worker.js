@@ -1,24 +1,24 @@
-const CACHE_NAME = "quickaid-cache-v4";
+const CACHE_NAME="quickaid-cache-v4";
 
-const urlsToCache = [
+const FILES_TO_CACHE=[
 "./",
 "./index.html",
-"./masthead-v2.png",
-"./manifest.json"
+"./manifest.json",
+"./masthead-v2.png"
 ];
 
-self.addEventListener("install", event=>{
+self.addEventListener("install",event=>{
 event.waitUntil(
 caches.open(CACHE_NAME).then(cache=>{
-return cache.addAll(urlsToCache);
+return cache.addAll(FILES_TO_CACHE);
 })
 );
 });
 
-self.addEventListener("fetch", event=>{
+self.addEventListener("fetch",event=>{
 event.respondWith(
 caches.match(event.request).then(response=>{
-return response || fetch(event.request);
+return response||fetch(event.request);
 })
 );
 });
