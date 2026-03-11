@@ -609,168 +609,216 @@
     QuickAid © 2026 | Prototype Web Based First Aid Recommendation System
   </footer>
 
-  <script>
-    let latestReport = "No report generated yet.";
+<script>
+  let latestReport = "No report generated yet.";
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-    }
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
 
-    function getCheckedSymptoms() {
-      const symptoms = document.querySelectorAll(".symptom:checked");
-      return Array.from(symptoms).map(item => item.value);
-    }
+  function getCheckedSymptoms() {
+    const symptoms = document.querySelectorAll(".symptom:checked");
+    return Array.from(symptoms).map(item => item.value);
+  }
 
-    function calculateRiskScore(severity, bleeding, symptoms) {
-      let score = 0;
+  function calculateRiskScore(severity, bleeding, symptoms) {
+    let score = 0;
 
-      if (severity === "mild") score += 1;
-      if (severity === "moderate") score += 3;
-      if (severity === "serious") score += 5;
+    if (severity === "mild") score += 1;
+    if (severity === "moderate") score += 3;
+    if (severity === "serious") score += 5;
 
-      if (bleeding === "mild") score += 2;
-      if (bleeding === "heavy") score += 5;
+    if (bleeding === "mild") score += 2;
+    if (bleeding === "heavy") score += 5;
 
-      score += symptoms.length * 2;
+    score += symptoms.length * 2;
 
-      return score;
-    }
+    return score;
+  }
 
-    function getPriorityFromScore(score) {
-      if (score >= 8) return { text: "High Priority", className: "high" };
-      if (score >= 4) return { text: "Moderate Priority", className: "medium" };
-      return { text: "Low Priority", className: "low" };
-    }
+  function getPriorityFromScore(score) {
+    if (score >= 8) return { text: "High Priority", className: "high" };
+    if (score >= 4) return { text: "Moderate Priority", className: "medium" };
+    return { text: "Low Priority", className: "low" };
+  }
 
-    function generateRecommendation() {
-      const injuryType = document.getElementById("injuryType").value;
-      const severity = document.getElementById("severity").value;
-      const bleeding = document.getElementById("bleeding").value;
-      const herbalAvailable = document.getElementById("herbalAvailable").value;
-      const checkedSymptoms = getCheckedSymptoms();
+  function generateRecommendation() {
+    const injuryType = document.getElementById("injuryType").value;
+    const severity = document.getElementById("severity").value;
+    const bleeding = document.getElementById("bleeding").value;
+    const herbalAvailable = document.getElementById("herbalAvailable").value;
+    const checkedSymptoms = getCheckedSymptoms();
 
-      const result = document.getElementById("result");
-      const scoreBox = document.getElementById("scoreBox");
+    const result = document.getElementById("result");
+    const scoreBox = document.getElementById("scoreBox");
 
-      if (!injuryType || !severity || !bleeding || !herbalAvailable) {
-        result.style.display = "block";
-        result.innerHTML = "<h3>Please complete all required fields first.</h3>";
-        scoreBox.innerHTML = "<strong>Risk Score:</strong> Incomplete assessment";
-        return;
-      }
-
-      const score = calculateRiskScore(severity, bleeding, checkedSymptoms);
-      const priority = getPriorityFromScore(score);
-
-      let firstAidSteps = "";
-      let naturalSupport = "";
-      let summaryText = "";
-      let emergencyNote = "";
-      let woundName = "";
-
-      if (injuryType === "cut") {
-        woundName = "Minor Cut";
-        firstAidSteps = `
-          <h3>Basic First Aid for Minor Cut</h3>
-          <ul>
-            <li>Wash hands before touching the wound if possible.</li>
-            <li>Clean the cut gently with clean running water.</li>
-            <li>Apply gentle pressure if slight bleeding is present.</li>
-            <li>Cover with a clean dressing or bandage.</li>
-          </ul>
-        `;
-        naturalSupport = herbalAvailable === "yes"
-          ? "<p><strong>Optional Natural Support:</strong> Clean aloe vera gel may be used around the affected area after cleaning.</p>"
-          : "<p><strong>Optional Natural Support:</strong> Continue proper cleaning and dressing even without natural remedies.</p>";
-      }
-
-      if (injuryType === "burn") {
-        woundName = "Minor Burn";
-        firstAidSteps = `
-          <h3>Basic First Aid for Minor Burn</h3>
-          <ul>
-            <li>Cool the area under running water for at least 10 minutes.</li>
-            <li>Do not apply ice directly to the skin.</li>
-            <li>Remove tight items near the area if safe to do so.</li>
-            <li>Cover loosely with a clean non-stick dressing if needed.</li>
-          </ul>
-        `;
-        naturalSupport = herbalAvailable === "yes"
-          ? "<p><strong>Optional Natural Support:</strong> Clean aloe vera gel may provide soothing support after cooling the skin.</p>"
-          : "<p><strong>Optional Natural Support:</strong> Focus on proper cooling and protection of the burn area.</p>";
-      }
-
-      if (injuryType === "bite") {
-        woundName = "Insect Bite";
-        firstAidSteps = `
-          <h3>Basic First Aid for Insect Bite</h3>
-          <ul>
-            <li>Wash the area with mild soap and clean water.</li>
-            <li>Apply a cold compress to reduce swelling or irritation.</li>
-            <li>Avoid scratching the area.</li>
-            <li>Observe for unusual swelling or allergic reaction.</li>
-          </ul>
-        `;
-        naturalSupport = herbalAvailable === "yes"
-          ? "<p><strong>Optional Natural Support:</strong> Aloe vera may help soothe skin irritation if available and clean.</p>"
-          : "<p><strong>Optional Natural Support:</strong> Continue observation and basic skin care without natural remedies.</p>";
-      }
-
-      if (injuryType === "abrasion") {
-        woundName = "Abrasion / Scrape";
-        firstAidSteps = `
-          <h3>Basic First Aid for Abrasion / Scrape</h3>
-          <ul>
-            <li>Rinse the scrape gently with clean water to remove dirt.</li>
-            <li>Pat dry using a clean cloth or tissue.</li>
-            <li>Protect the area with a clean dressing if needed.</li>
-            <li>Keep the wound clean during recovery.</li>
-          </ul>
-        `;
-        naturalSupport = herbalAvailable === "yes"
-          ? "<p><strong>Optional Natural Support:</strong> Clean aloe vera gel may be applied after washing the area.</p>"
-          : "<p><strong>Optional Natural Support:</strong> Continue wound cleaning and protection without natural remedies.</p>";
-      }
-
-      if (priority.className === "high") {
-        summaryText = "The wound assessment shows several warning indicators that may require professional medical care.";
-        emergencyNote = `
-          <div class="danger-box">
-            Warning: Based on the entered data, professional medical consultation is strongly recommended.
-          </div>
-        `;
-        alert("Warning: This assessment indicates a high-priority case that may require medical attention.");
-      } else if (priority.className === "medium") {
-        summaryText = "The wound may still be manageable with first aid, but close observation is advised.";
-      } else {
-        summaryText = "The wound appears manageable through basic first aid and observation.";
-      }
-
-      const symptomText = checkedSymptoms.length
-        ? checkedSymptoms.join(", ")
-        : "No additional warning signs selected";
-
-      scoreBox.innerHTML = `
-        <strong>Risk Score:</strong> ${score} / 20<br>
-        <span class="mini-note">Scoring is based on wound condition, bleeding level, and selected symptoms.</span>
-      `;
-
-      result.innerHTML = `
-        <div class="priority ${priority.className}">${priority.text}</div>
-        <p><strong>Wound Type:</strong> ${woundName}</p>
-        <p><strong>System Summary:</strong> ${summaryText}</p>
-        <p><strong>Checked Symptoms:</strong> ${symptomText}</p>
-        ${firstAidSteps}
-        ${naturalSupport}
-        <div class="warning">
-          <strong>Reminder:</strong> If symptoms worsen, bleeding continues, the wound spreads, or infection signs appear, consult a healthcare professional.
-        </div>
-        ${emergencyNote}
-      `;
-
+    if (!injuryType || !severity || !bleeding || !herbalAvailable) {
       result.style.display = "block";
+      result.innerHTML = "<h3>Please complete all required fields first.</h3>";
+      scoreBox.innerHTML = "<strong>Risk Score:</strong> Incomplete assessment";
+      return;
+    }
 
-      latestReport =
+    const score = calculateRiskScore(severity, bleeding, checkedSymptoms);
+    const priority = getPriorityFromScore(score);
+
+    let woundName = "";
+    let firstAidSteps = "";
+    let naturalSupport = "";
+    let summaryText = "";
+    let emergencyNote = "";
+
+    if (injuryType === "cut") {
+      woundName = "Minor Cut";
+
+      firstAidSteps = `
+        <h3>Basic First Aid for Minor Cut</h3>
+        <ul>
+          <li>Wash hands before touching the wound if possible.</li>
+          <li>Clean the cut gently with clean running water.</li>
+          <li>Apply gentle pressure if slight bleeding is present.</li>
+          <li>Cover with a clean dressing or bandage.</li>
+        </ul>
+      `;
+
+      naturalSupport = herbalAvailable === "yes"
+        ? `
+          <h3>Complementary Natural Support</h3>
+          <ul>
+            <li><strong>Honey</strong> – may help protect the wound because of its natural antibacterial properties.</li>
+            <li><strong>Turmeric paste</strong> – may provide anti inflammatory support for minor surface wounds.</li>
+            <li><strong>Banana peel extract</strong> – may contain antioxidant and antimicrobial compounds.</li>
+          </ul>
+          <p><strong>Reminder:</strong> Use only on clean minor wounds and never on deep or heavily bleeding cuts.</p>
+        `
+        : `
+          <p><strong>Complementary Natural Support:</strong> No natural remedy selected. Continue proper cleaning, dressing, and observation of the wound.</p>
+        `;
+    }
+
+    if (injuryType === "burn") {
+      woundName = "Minor Burn";
+
+      firstAidSteps = `
+        <h3>Basic First Aid for Minor Burn</h3>
+        <ul>
+          <li>Cool the area under running water for at least 10 minutes.</li>
+          <li>Do not apply ice directly to the skin.</li>
+          <li>Remove tight items near the area if safe to do so.</li>
+          <li>Cover loosely with a clean non stick dressing if needed.</li>
+        </ul>
+      `;
+
+      naturalSupport = herbalAvailable === "yes"
+        ? `
+          <h3>Complementary Natural Support</h3>
+          <ul>
+            <li><strong>Aloe vera</strong> – may help soothe the skin and reduce irritation after cooling.</li>
+            <li><strong>Honey</strong> – may help protect the area from infection in minor burns.</li>
+            <li><strong>Cucumber gel</strong> – may provide a cooling and soothing effect for mild burns.</li>
+          </ul>
+          <p><strong>Reminder:</strong> Natural remedies should only be considered after proper cooling with water and only for minor burns.</p>
+        `
+        : `
+          <p><strong>Complementary Natural Support:</strong> No natural remedy selected. Focus on proper cooling and protection of the burn area.</p>
+        `;
+    }
+
+    if (injuryType === "bite") {
+      woundName = "Insect Bite";
+
+      firstAidSteps = `
+        <h3>Basic First Aid for Insect Bite</h3>
+        <ul>
+          <li>Wash the area with mild soap and clean water.</li>
+          <li>Apply a cold compress to reduce swelling or irritation.</li>
+          <li>Avoid scratching the area.</li>
+          <li>Observe for unusual swelling or allergic reaction.</li>
+        </ul>
+      `;
+
+      naturalSupport = herbalAvailable === "yes"
+        ? `
+          <h3>Complementary Natural Support</h3>
+          <ul>
+            <li><strong>Basil leaf extract</strong> – may help reduce itching and inflammation.</li>
+            <li><strong>Oatmeal paste</strong> – may soothe irritation and itching.</li>
+            <li><strong>Diluted tea tree oil</strong> – may provide antiseptic support if used carefully on minor skin irritation.</li>
+          </ul>
+          <p><strong>Reminder:</strong> Stop use immediately if irritation worsens. Severe swelling or breathing difficulty requires urgent medical care.</p>
+        `
+        : `
+          <p><strong>Complementary Natural Support:</strong> No natural remedy selected. Continue observation and basic skin care.</p>
+        `;
+    }
+
+    if (injuryType === "abrasion") {
+      woundName = "Abrasion / Scrape";
+
+      firstAidSteps = `
+        <h3>Basic First Aid for Abrasion / Scrape</h3>
+        <ul>
+          <li>Rinse the scrape gently with clean water to remove dirt.</li>
+          <li>Pat dry using a clean cloth or tissue.</li>
+          <li>Protect the area with a clean dressing if needed.</li>
+          <li>Keep the wound clean during recovery.</li>
+        </ul>
+      `;
+
+      naturalSupport = herbalAvailable === "yes"
+        ? `
+          <h3>Complementary Natural Support</h3>
+          <ul>
+            <li><strong>Aloe vera</strong> – may help soothe irritated skin and support repair.</li>
+            <li><strong>Coconut oil</strong> – may provide mild antimicrobial support for superficial scrapes.</li>
+            <li><strong>Plantain leaf extract</strong> – traditionally used for minor skin irritation and inflammation.</li>
+          </ul>
+          <p><strong>Reminder:</strong> Use only after the scrape has been cleaned well. Do not apply to dirty wounds with debris still present.</p>
+        `
+        : `
+          <p><strong>Complementary Natural Support:</strong> No natural remedy selected. Continue wound cleaning and protection without natural remedies.</p>
+        `;
+    }
+
+    if (priority.className === "high") {
+      summaryText = "The wound assessment shows several warning indicators that may require professional medical care.";
+      emergencyNote = `
+        <div class="danger-box">
+          Warning: Based on the entered data, professional medical consultation is strongly recommended.
+        </div>
+      `;
+      alert("Warning: This assessment indicates a high priority case that may require medical attention.");
+    } else if (priority.className === "medium") {
+      summaryText = "The wound may still be manageable with first aid, but close observation is advised.";
+    } else {
+      summaryText = "The wound appears manageable through basic first aid and observation.";
+    }
+
+    const symptomText = checkedSymptoms.length
+      ? checkedSymptoms.join(", ")
+      : "No additional warning signs selected";
+
+    scoreBox.innerHTML = `
+      <strong>Risk Score:</strong> ${score} / 20<br>
+      <span class="mini-note">Scoring is based on wound condition, bleeding level, and selected symptoms.</span>
+    `;
+
+    result.innerHTML = `
+      <div class="priority ${priority.className}">${priority.text}</div>
+      <p><strong>Wound Type:</strong> ${woundName}</p>
+      <p><strong>System Summary:</strong> ${summaryText}</p>
+      <p><strong>Checked Symptoms:</strong> ${symptomText}</p>
+      ${firstAidSteps}
+      ${naturalSupport}
+      <div class="warning">
+        <strong>Reminder:</strong> Natural remedies are only optional supportive care for minor wounds. If symptoms worsen, bleeding continues, the wound spreads, or infection signs appear, consult a healthcare professional.
+      </div>
+      ${emergencyNote}
+    `;
+
+    result.style.display = "block";
+
+    latestReport =
 `QuickAid Assessment Report
 
 Wound Type: ${woundName}
@@ -785,41 +833,44 @@ Priority Level: ${priority.text}
 System Summary:
 ${summaryText}
 
+Note:
+Natural remedies are optional supportive care only and do not replace medical treatment.
+
 This report is for educational purposes only and does not replace professional medical advice.`;
-    }
+  }
 
-    function resetAssessment() {
-      document.getElementById("injuryType").value = "";
-      document.getElementById("severity").value = "";
-      document.getElementById("bleeding").value = "";
-      document.getElementById("herbalAvailable").value = "";
+  function resetAssessment() {
+    document.getElementById("injuryType").value = "";
+    document.getElementById("severity").value = "";
+    document.getElementById("bleeding").value = "";
+    document.getElementById("herbalAvailable").value = "";
 
-      document.querySelectorAll(".symptom").forEach(item => {
-        item.checked = false;
-      });
+    document.querySelectorAll(".symptom").forEach(item => {
+      item.checked = false;
+    });
 
-      document.getElementById("result").style.display = "none";
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("scoreBox").innerHTML = "<strong>Risk Score:</strong> Not generated yet";
-      latestReport = "No report generated yet.";
-    }
+    document.getElementById("result").style.display = "none";
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("scoreBox").innerHTML = "<strong>Risk Score:</strong> Not generated yet";
+    latestReport = "No report generated yet.";
+  }
 
-    function downloadReport() {
-      const blob = new Blob([latestReport], { type: "text/plain" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "QuickAid_Report.txt";
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
+  function downloadReport() {
+    const blob = new Blob([latestReport], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "QuickAid_Report.txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
 
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js")
-          .then(() => console.log("Service Worker registered"))
-          .catch((error) => console.log("Service Worker registration failed:", error));
-      });
-    }
-  </script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch((error) => console.log("Service Worker registration failed:", error));
+    });
+  }
+</script>
 </body>
 </html>
